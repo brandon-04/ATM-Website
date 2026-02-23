@@ -1,0 +1,117 @@
+
+@font-face {
+    font-family: Oswald;
+    src: url("fonts/Oswald/Oswald-VariableFont_wght.ttf");
+}
+:root {
+    --main-font: Oswald;
+
+
+    --main-color: ; 
+    --accent-color: ;
+    --accent-color-two: ;
+}
+*{
+    font-family: var(--main-font);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+#outerContainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    height: 98vh;
+    width: 95vw;
+
+    border-radius: 15px;
+    border: thin black solid;
+}
+
+#leftContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    width: 70%;
+    height: 100%;
+
+    border-radius: 15px;
+    border: thin black solid;
+}
+#rightContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 30%;
+    height: 100%;
+
+    border-radius: 15px;
+    border: thin black solid;
+}
+#title {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 5px;
+    font-size: 5rem;
+    
+}
+#screenContainer {
+    display: flex;
+    flex-direction: column;
+
+    height: 75%;
+    width: 85%;
+
+    border: thin black solid;
+    border-radius: 15px;
+}
+
+/*KeypadStylings*/
+#keypad {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    height: 50%;
+    width: 95%;
+
+    border: thin black solid;
+    border-radius: 12px;
+
+}
+.keypadRow {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: auto;
+}
+.keypadButtons {
+    height: 90%;
+    width: 30%;
+
+    font-size: 35px;
+
+    border-radius: 12px;
+    border: thin black solid;
+}
+
+#yes {
+    background-image: url("img/icon/check.svg");
+}
+#no {
+    background-image: url("img/icon/cross.svg");
+}
+#yes, #no {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
