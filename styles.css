@@ -3,14 +3,24 @@
     font-family: Oswald;
     src: url("fonts/Oswald/Oswald-VariableFont_wght.ttf");
 }
-:root {
-    --main-font: Oswald;
 
-
-    --main-color: ; 
-    --accent-color: ;
-    --accent-color-two: ;
+@font-face {
+    font-family: SpecialGothic;
+    src: url("fonts/SpecialGothic/SpecialGothicExpandedOne-Regular.ttf");
 }
+
+:root {
+    --main-font: SpecialGothic;
+
+
+    --main-color: #344e41; 
+    --accent-color: #588157;
+    --accent-color-two: #a3b18a;
+    --contrast-color: #e3d5ca;
+
+    --screen-color: #e3d5ca;
+}
+
 *{
     font-family: var(--main-font);
 }
@@ -18,6 +28,10 @@
 body {
     display: flex;
     justify-content: center;
+}
+
+p {
+    color: var(--main-color);
 }
 
 #outerContainer {
@@ -28,6 +42,8 @@ body {
     height: 98vh;
     width: 95vw;
 
+    background-color: var(--main-color);
+
     border-radius: 15px;
     border: thin black solid;
 }
@@ -35,39 +51,63 @@ body {
 #leftContainer {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
     align-items: center;
 
     width: 70%;
     height: 100%;
-
-    border-radius: 15px;
-    border: thin black solid;
 }
+
 #rightContainer {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 25px;
+
+    justify-content: space-evenly;
     align-items: center;
 
     width: 30%;
     height: 100%;
+}
 
-    border-radius: 15px;
-    border: thin black solid;
+#logo {
+    max-width: 100px;
+    filter: brightness(0) saturate(100%) invert(48%) 
+        sepia(31%) saturate(453%) hue-rotate(70deg) brightness(89%) contrast(89%);
 }
+
+#titleBox {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+
+    width: 100%;
+}
+
 #title {
-    margin: 0;
-    padding: 0;
-    padding-bottom: 5px;
-    font-size: 5rem;
+    margin: 0px;
+    padding: 0px;
+
+    color: var(--contrast-color);
     
+    font-size: 4rem;
 }
+
 #screenContainer {
     display: flex;
     flex-direction: column;
 
     height: 75%;
-    width: 85%;
+    width: 90%;
+
+    background-color: var(--contrast-color);
+
+    margin: 0px;
+    padding: 0px;
 
     border: thin black solid;
     border-radius: 15px;
@@ -83,10 +123,10 @@ body {
     height: 50%;
     width: 95%;
 
-    border: thin black solid;
     border-radius: 12px;
 
 }
+
 .keypadRow {
     display: flex;
     justify-content: space-around;
@@ -94,24 +134,77 @@ body {
     height: 100%;
     width: auto;
 }
+
 .keypadButtons {
     height: 90%;
     width: 30%;
 
     font-size: 35px;
 
+    background-color: var(--accent-color);
+    color: var(--contrast-color);
+
     border-radius: 12px;
     border: thin black solid;
 }
 
-#yes {
-    background-image: url("img/icon/check.svg");
+.keypadButtons:hover {
+    background-color: var(--accent-color-two);
 }
-#no {
-    background-image: url("img/icon/cross.svg");
-}
+
+
 #yes, #no {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+#cardSlot {
+    height: 5%;
+    width: 80%;
+
+    text-align: center;
+
+    border: thin black solid;
+    border-radius: 12px;
+
+    background-color: black;
+}
+
+#cashSlot {
+    height: 10%;
+    width: 90%;
+
+    text-align: center;
+
+    border: thin black solid;
+    border-radius: 12px;
+
+    background-color: black;
+}
+
+#yesSymbol {
+    max-width: 100px;
+
+    filter: brightness(0) saturate(100%) invert(54%) sepia(51%) 
+        saturate(650%) hue-rotate(66deg) brightness(95%) contrast(92%);
+}
+#noSymbol {
+    max-width: 100px;
+
+    filter: brightness(0) saturate(100%) invert(33%) sepia(13%) 
+        saturate(4521%) hue-rotate(325deg) brightness(87%) contrast(95%);
+
+}
+
+
+
+
+
+#topBox {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    height: 50px;
 }
