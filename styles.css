@@ -45,7 +45,7 @@ p {
     background-color: var(--main-color);
 
     border-radius: 15px;
-    border: thin black solid;
+    border: medium darkgray solid;
 }
 
 #leftContainer {
@@ -101,6 +101,7 @@ p {
     display: flex;
     flex-direction: column;
 
+
     height: 75%;
     width: 90%;
 
@@ -109,7 +110,7 @@ p {
     margin: 0px;
     padding: 0px;
 
-    border: thin black solid;
+    border: medium darkgray solid;
     border-radius: 15px;
 }
 
@@ -145,11 +146,16 @@ p {
     color: var(--contrast-color);
 
     border-radius: 12px;
-    border: thin black solid;
+    border: medium darkgray solid;
+
+    box-shadow: 3px 3px black;
+
 }
 
 .keypadButtons:hover {
     background-color: var(--accent-color-two);
+
+    box-shadow: none;
 }
 
 
@@ -160,18 +166,26 @@ p {
 }
 
 #cardSlot {
-    height: 5%;
-    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 20px;
+    width: 50%;
 
     text-align: center;
 
     border: thin black solid;
-    border-radius: 12px;
+    border-radius: 15px;
 
     background-color: black;
 }
 
 #cashSlot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     height: 10%;
     width: 90%;
 
@@ -197,14 +211,50 @@ p {
 
 }
 
-
-
-
-
 #topBox {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+
 
     height: 50px;
 }
+
+#topBox > p {
+font-size: 1.5rem;
+}
+
+
+/*pin entry screen*/
+
+#pinEntryScreen {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+    width: 100%;
+}
+
+#pinEntryScreen > h1 {
+    font-size: 3rem;
+    color: var(--main-color);
+}
+
+#pinEntryScreen > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 50px;
+    width: 150px;
+
+    border: thin black solid;
+}
+
+#pinEntryTextDisplay {
+    font-size: 3rem;
+    color: var(--main-color);
+}
+
