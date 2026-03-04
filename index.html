@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
-    <title></title>
+    <title>Evergreen Banking</title>
 </head>
 <body>
     <div id="outerContainer">
@@ -18,17 +18,26 @@
             <div id="screenContainer">
                 <div id="topBox">
                     <p id="time"></p>
-                    <p id="location">Pin Entry</p>
+                    <p id="location"></p>
                     <p id="date"></p>
                 </div>
 
-                <div id="pinEntryScreen">
-                    <h1>Please enter your PIN:</h1>
-                    <div>
-                        <h1 id="pinEntryTextDisplay"></h1>
+                <div class="pinEntry" id="pinEntryScreen">
+                    <h1 class="pinEntry">Please enter your PIN:</h1>
+                    <div class="pinEntry">
+                        <h1 class="pinEntry" id="pinEntryTextDisplay"></h1>
                     </div>
                 </div>
 
+                <div class="lockout hidden" id="lockOutScreen">
+                    <h1 class="lockout hidden">No tries remaining :&#40;</h1>
+                </div>
+
+                <div class="home hidden" id="homeScreen">
+                    <button class="home hidden" id="balanceButton">Balance</button>
+                    <button class="home hidden" id="withdrawButton">Withdraw</button>
+                    <button class="home hidden" id="pinChangeButton">Change Pin</button>
+                </div>
             </div>
         </div>
 
@@ -39,16 +48,19 @@
                     <button class="keypadButtons" id="button2">2</button>
                     <button class="keypadButtons" id="button3">3</button>
                 </div>
+
                 <div class="keypadRow">
                     <button class="keypadButtons" id="button4">4</button>
                     <button class="keypadButtons" id="button5">5</button>
                     <button class="keypadButtons" id="button6">6</button>
                 </div>
+
                 <div class="keypadRow">
                     <button class="keypadButtons" id="button7">7</button>
                     <button class="keypadButtons" id="button8">8</button>
                     <button class="keypadButtons" id="button9">9</button>
                 </div>
+
                 <div class="keypadRow">
                     <button class="keypadButtons" id="buttonNo"><img id="noSymbol" src="img/icon/cross.svg"></button>
                     <button class="keypadButtons" id="button0">0</button>
@@ -58,6 +70,7 @@
             </div>
 
             <div id="cardSlot"><p>card slot</p></div>
+
             <div id="cashSlot"><p>cash slot</p></div>
         </div>
     </div>
