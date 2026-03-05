@@ -318,3 +318,21 @@ p {
     box-shadow: none;
 }
 
+/*balance display screen*/
+#balanceScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    gap: 30px;
+
+    height: 100%;
+    width: 100%;
+}
+
+#balanceScreen > h1 {
+    font-size: 5rem;
+    color: var(--main-color);
+}

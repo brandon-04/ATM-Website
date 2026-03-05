@@ -1,8 +1,10 @@
 localStorage.setItem("pin", "1234");
-localStorage.setItem("balance", "1000");
+localStorage.setItem("balance", "12250");
 let attempts = 0;
+
 let locationDisplay = document.querySelector("#location");
 let pinDisplay = document.querySelector("#pinEntryTextDisplay");
+let balanceDisplay = document.querySelector("#balanceDisplayText");
 
 let buttonNo = document.querySelector("#buttonNo");
 let buttonYes = document.querySelector("#buttonYes");
@@ -11,6 +13,9 @@ let buttonYes = document.querySelector("#buttonYes");
 setTime();
 setInterval(setTime, 1000);
 
+function reset() {
+    location.reload();
+}
 
 function setTime() {
     let timeDisplay = document.querySelector("#time");
@@ -56,7 +61,7 @@ function pinEntry() {
     }
 
     buttonNo.addEventListener("click", clearPinEntry);
-    buttonYes.addEventListener("click",checkPin);
+    buttonYes.addEventListener("click", checkPin);
 
 
     //pin entry exclusive functions
@@ -70,7 +75,6 @@ function pinEntry() {
             togglePinEntry();
             toggleHomeScreen();
             buttonNo.removeEventListener("click", clearPinEntry);
-            buttonYes.removeEventListener("click", checkPin);
         }
         else {
             attempts += 1;
@@ -84,33 +88,50 @@ function pinEntry() {
     }
 }
 function homeScreen() {
-    let buttonBalance = document.querySelector("#balanceButton");
-    let buttonWithdraw = document.querySelector("#withdrawButton"); 
-    let buttonPinChange = document.querySelector("#pinChangeButton"); 
+    let balanceButton = document.querySelector("#balanceButton");
+    let withdrawButton = document.querySelector("#withdrawButton"); 
+    let pinChangeButton = document.querySelector("#pinChangeButton"); 
 
-    buttonNo.addEventListener("click", () => {
-        location.reload();
-    });
+    buttonNo.addEventListener("click", reset);
+    buttonYes.addEventListener("click", reset);
 
     balanceButton.addEventListener("click", () => {
         toggleHomeScreen();
         toggleBalanceScreen();
+
+        buttonNo.removeEventListener("click", reset);
     });
     withdrawButton.addEventListener("click", () => {
         toggleHomeScreen();
         toggleWithdrawScreen()
+
+        buttonNo.removeEventListener("click", reset);
     });
     pinChangeButton.addEventListener("click", () => {
         toggleHomeScreen();
         togglePinChangeScreen();
-    });
 
+        buttonNo.removeEventListener("click", reset);
+    });    
 }
 
 function balance() {
+    balanceDisplay.textContent = `£${localStorage.getItem("balance")}`
 
+    buttonNo.addEventListener("click", goBack);
+
+    function goBack(){
+        toggleBalanceScreen();
+        toggleHomeScreen();
+    }
 }
 
+function withdraw() {
+
+}
+function pinChange() {
+    
+}
 
 
 
@@ -121,6 +142,8 @@ function toggleBalanceScreen() {
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
+
+    balance();
 }
 function toggleWithdrawScreen() {
     let objects = document.getElementsByClassName("withdraw");
