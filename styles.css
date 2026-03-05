@@ -125,10 +125,17 @@ p {
     flex-direction: column;
     justify-content: space-evenly;
 
+    text-align: center;
+
     height: 50%;
     width: 95%;
 
     border-radius: 12px;
+
+}
+#keypad > h1 {
+    font-size: 3rem;
+    color: var(--contrast-color);
 
 }
 

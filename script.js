@@ -2,8 +2,11 @@ localStorage.setItem("pin", "1234");
 localStorage.setItem("balance", "1000");
 let attempts = 0;
 let locationDisplay = document.querySelector("#location");
+let pinDisplay = document.querySelector("#pinEntryTextDisplay");
+
 let buttonNo = document.querySelector("#buttonNo");
 let buttonYes = document.querySelector("#buttonYes");
+
 
 setTime();
 setInterval(setTime, 1000);
@@ -36,13 +39,11 @@ function formatDate(number) {
 
 pinEntry();
 function pinEntry() {
+    
     locationDisplay.textContent = "Pin Entry";
-
-    let pinDisplay = document.querySelector("#pinEntryTextDisplay");
     let typedPin = "";
-
     clearPinEntry();
-
+    
     for (let i = 0; i < 10; i++) {
         let button = document.querySelector(`#button${i}`);
 
@@ -55,21 +56,21 @@ function pinEntry() {
     }
 
     buttonNo.addEventListener("click", clearPinEntry);
-    buttonYes.addEventListener("click", () => {
-        checkPin(typedPin);
-    })
+    buttonYes.addEventListener("click",checkPin);
+
 
     //pin entry exclusive functions
     function clearPinEntry() {
         typedPin = "";
-        pinDisplay.textContent = "";
+        pinDisplay.textContent = typedPin;
     }
 
-    function checkPin(num) {
-        if (num == localStorage.getItem("pin")) {
+    function checkPin() {
+        if (typedPin == localStorage.getItem("pin")) {
             togglePinEntry();
             toggleHomeScreen();
             buttonNo.removeEventListener("click", clearPinEntry);
+            buttonYes.removeEventListener("click", checkPin);
         }
         else {
             attempts += 1;
@@ -88,8 +89,7 @@ function homeScreen() {
     let buttonPinChange = document.querySelector("#pinChangeButton"); 
 
     buttonNo.addEventListener("click", () => {
-        toggleHomeScreen();
-        togglePinEntry();
+        location.reload();
     });
 
     balanceButton.addEventListener("click", () => {
@@ -104,6 +104,10 @@ function homeScreen() {
         toggleHomeScreen();
         togglePinChangeScreen();
     });
+
+}
+
+function balance() {
 
 }
 
