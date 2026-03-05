@@ -94,24 +94,44 @@ function homeScreen() {
 
     balanceButton.addEventListener("click", () => {
         toggleHomeScreen();
-        //balance page
+        toggleBalanceScreen();
     });
     withdrawButton.addEventListener("click", () => {
         toggleHomeScreen();
-        //withdraw page
+        toggleWithdrawScreen()
     });
     pinChangeButton.addEventListener("click", () => {
         toggleHomeScreen();
-        //pin change screen
+        togglePinChangeScreen();
     });
 
-    
 }
+
+
+
+
 
 function toggleBalanceScreen() {
+    let objects = document.getElementsByClassName("balance");
 
+    for (let i = 0; i < objects.length; i++) {
+        objects[i].classList.toggle("hidden");
+    }
 }
+function toggleWithdrawScreen() {
+    let objects = document.getElementsByClassName("withdraw");
 
+    for (let i = 0; i < objects.length; i++) {
+        objects[i].classList.toggle("hidden");
+    }
+}
+function togglePinChangeScreen() {
+    let objects = document.getElementsByClassName("pinChange");
+
+    for (let i = 0; i < objects.length; i++) {
+        objects[i].classList.toggle("hidden");
+    }
+}
 function toggleLockOutScreen() {
     let objects = document.getElementsByClassName("lockout");
 
