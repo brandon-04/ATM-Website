@@ -116,6 +116,7 @@ function homeScreen() {
 }
 
 function balance() {
+    locationDisplay.textContent = "Balance";
     balanceDisplay.textContent = `£${localStorage.getItem("balance")}`
 
     buttonNo.addEventListener("click", goBack);
@@ -127,7 +128,7 @@ function balance() {
 }
 
 function withdraw() {
-
+    locationDisplay.textContent = "Withdraw";
 }
 function pinChange() {
     
@@ -151,6 +152,7 @@ function toggleWithdrawScreen() {
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
+    withdraw();
 }
 function togglePinChangeScreen() {
     let objects = document.getElementsByClassName("pinChange");
