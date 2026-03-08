@@ -1,5 +1,4 @@
 localStorage.setItem("pin", "1234");
-localStorage.setItem("balance", "12250");
 let attempts = 0;
 
 let locationDisplay = document.querySelector("#location");
@@ -16,7 +15,6 @@ setInterval(setTime, 1000);
 function reset() {
     location.reload();
 }
-
 function setTime() {
     let timeDisplay = document.querySelector("#time");
     let dateDisplay = document.querySelector("#date");
@@ -115,6 +113,10 @@ function homeScreen() {
     });    
 }
 
+function setBalance(balance) {
+    balance == -1 ? localStorage.setItem("balance", "12250") : localStorage.setItem("balance", `${balance}`);
+}
+
 function balance() {
     locationDisplay.textContent = "Balance";
     balanceDisplay.textContent = `£${localStorage.getItem("balance")}`
@@ -129,6 +131,55 @@ function balance() {
 
 function withdraw() {
     locationDisplay.textContent = "Withdraw";
+
+    let withdrawFive = document.querySelector("#withdrawFive");
+    let withdrawTen = document.querySelector("#withdrawTen");
+    let withdrawTwenty = document.querySelector("#withdrawTwenty");
+    let withdrawForty = document.querySelector("#withdrawForty");
+    let withdrawFifty = document.querySelector("#withdrawFifty");
+    let withdrawCustom = document.querySelector("#withdrawCustom");
+
+    let curBalance = parseInt(localStorage.getItem("balance"));
+    let newBalance = 0;
+
+    withdrawFive.addEventListener("click", () => {
+        localStorage.setItem("balance",`${curBalance - 5}`);
+    });
+
+    withdrawTen.addEventListener("click", () => {
+        localStorage.setItem("balance",`${curBalance - 10}`);
+    });
+
+    withdrawTwenty.addEventListener("click", () => {
+        localStorage.setItem("balance",`${curBalance - 20}`);
+    });
+
+    withdrawForty.addEventListener("click", () => {
+        localStorage.setItem("balance",`${curBalance - 40}`);
+    });
+
+    withdrawFifty.addEventListener("click", () => {
+        localStorage.setItem("balance",`${curBalance - 50}`);
+    });
+
+    withdrawCustom.addEventListener("click", () => {
+        
+    });
+
+
+
+    
+
+
+
+
+
+    buttonNo.addEventListener("click", goBack);
+
+    function goBack() {
+        toggleWithdrawScreen();
+        toggleHomeScreen();
+    }
 }
 function pinChange() {
     
