@@ -1,12 +1,18 @@
 let attempts = 0;
-
 let locationDisplay = document.querySelector("#location");
 let pinDisplay = document.querySelector("#pinEntryTextDisplay");
 let balanceDisplay = document.querySelector("#balanceDisplayText");
+let customAmountDisplay = document.querySelector("#customAmountDisplay");
 
 let buttonNo = document.querySelector("#buttonNo");
 let buttonYes = document.querySelector("#buttonYes");
 
+initSetup();
+
+setTime();
+setInterval(setTime, 1000);
+
+pinEntry();
 
 function initSetup() {
     if (localStorage.getItem("pin") == null) {
@@ -14,12 +20,6 @@ function initSetup() {
         localStorage.setItem("balance", "1000")
     }
 }
-initSetup();
-
-
-setTime();
-setInterval(setTime, 1000);
-
 function reset() {
     location.reload();
 }
@@ -28,7 +28,6 @@ function setTime() {
     let dateDisplay = document.querySelector("#date");
 
     let dateAndTime = new Date;
-    console.log(dateAndTime);
 
     let hours = formatDate(dateAndTime.getHours());
     let minutes = formatDate(dateAndTime.getMinutes());
@@ -49,7 +48,7 @@ function formatDate(number) {
     return number < 10 ? `0${number}` : number;
 }
 
-pinEntry();
+
 function pinEntry() {
     
     locationDisplay.textContent = "Pin Entry";
@@ -70,6 +69,8 @@ function pinEntry() {
     buttonNo.addEventListener("click", clearPinEntry);
     buttonYes.addEventListener("click", checkPin);
 
+   
+
 
     //pin entry exclusive functions
     function clearPinEntry() {
@@ -79,9 +80,11 @@ function pinEntry() {
 
     function checkPin() {
         if (typedPin == localStorage.getItem("pin")) {
+
+            removeListeners();
+
             togglePinEntry();
             toggleHomeScreen();
-            buttonNo.removeEventListener("click", clearPinEntry);
         }
         else {
             attempts += 1;
@@ -93,6 +96,11 @@ function pinEntry() {
             }
         }
     }
+    function removeListeners() {
+        buttonYes.removeEventListener("click", checkPin);
+        buttonNo.removeEventListener("click", clearPinEntry);
+    }
+
 }
 function homeScreen() {
     let balanceButton = document.querySelector("#balanceButton");
@@ -139,47 +147,105 @@ function withdraw() {
     let curBalance = parseInt(localStorage.getItem("balance"));
 
     document.querySelector("#withdrawTen").addEventListener("click", () => {
-        localStorage.setItem("balance",`${curBalance - 10}`);
-        postWithdraw(10);
+        if(curBalance - 10 < 0) {
+            insufficientFunds();
+        }
+        else {
+          localStorage.setItem("balance",`${curBalance - 10}`);
+            postWithdraw(10);  
+        }
     });
 
     document.querySelector("#withdrawTwenty").addEventListener("click", () => {
-        localStorage.setItem("balance",`${curBalance - 20}`);
-        postWithdraw(20); 
+        if(curBalance - 20 < 0) {
+            insufficientFunds();
+        }
+        else {
+          localStorage.setItem("balance",`${curBalance - 20}`);
+            postWithdraw(20);  
+        }
     });
 
     document.querySelector("#withdrawFifty").addEventListener("click", () => {
-        localStorage.setItem("balance",`${curBalance - 50}`);
-        postWithdraw(50);
+        if(curBalance - 50 < 0) {
+            insufficientFunds();
+        }
+        else {
+          localStorage.setItem("balance",`${curBalance - 50}`);
+            postWithdraw(50);  
+        }
     });
 
     document.querySelector("#withdrawHundred").addEventListener("click", () => {
-        localStorage.setItem("balance",`${curBalance - 100}`);
-        postWithdraw(100);
+        if(curBalance - 100 < 0) {
+            insufficientFunds();
+        }
+        else {
+          localStorage.setItem("balance",`${curBalance - 100}`);
+            postWithdraw(100);  
+        }
     });
 
     document.querySelector("#withdrawCustom").addEventListener("click", () => {
-        
+        buttonNo.removeEventListener("click", goBack);
+
+        toggleWithdrawScreen();
+        toggleCustomWithdrawScreen();
     });
 
     function postWithdraw(amount) {
         alert(`You successfully withdrew £${amount}. Have a nice day!`)
         reset();
     }
+    function insufficientFunds() {
+        alert("You have insufficient funds :(");
+        reset();
+    }
 
     
-
-
-
-
 
     buttonNo.addEventListener("click", goBack);
 
     function goBack() {
         toggleWithdrawScreen();
         toggleHomeScreen();
+        buttonNo.removeEventListener("click", goBack);
     }
 }
+function customWithdraw() {
+
+    let typedAmount = "";
+    
+    for (let i = 0; i < 10; i++) {
+        let button = document.querySelector(`#button${i}`);
+
+        button.addEventListener("click", () => {
+            typedAmount += i;
+            customAmountDisplay.textContent = typedAmount;
+        });
+    }
+
+    buttonYes.addEventListener("click", () => {
+        checkAmount(parseInt(typedAmount));
+    });
+
+    buttonNo.addEventListener("click", goBack);
+
+    function goBack() {
+        toggleCustomWithdrawScreen();
+        toggleWithdrawScreen();
+        buttonNo.removeEventListener("click", goBack);
+    }
+
+    function checkAmount(amount) {
+        let curBalance = parseInt(localStorage.getItem("balance"))
+        if(amount % 5 == 0 && curBalance - amount < 0) {
+            localStorage.setItem("balance", `${curBalance - amount}`)
+            alert(`You successfully withdrew ${amount}. Have a nice day!`);
+        } 
+    }
+}
+
 function pinChange() {
     
 }
@@ -203,6 +269,14 @@ function toggleWithdrawScreen() {
         objects[i].classList.toggle("hidden");
     }
     withdraw();
+}
+function toggleCustomWithdrawScreen() {
+    let objects = document.getElementsByClassName("customWithdraw");
+
+    for (let i = 0; i < objects.length; i++) {
+        objects[i].classList.toggle("hidden");
+    }
+    customWithdraw(); 
 }
 function togglePinChangeScreen() {
     let objects = document.getElementsByClassName("pinChange");
