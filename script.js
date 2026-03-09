@@ -1,4 +1,4 @@
-localStorage.setItem("pin", "1234");
+
 let attempts = 0;
 
 let locationDisplay = document.querySelector("#location");
@@ -20,6 +20,7 @@ function setTime() {
     let dateDisplay = document.querySelector("#date");
 
     let dateAndTime = new Date;
+    console.log(dateAndTime);
 
     let hours = formatDate(dateAndTime.getHours());
     let minutes = formatDate(dateAndTime.getMinutes());
@@ -27,7 +28,7 @@ function setTime() {
 
     let fullTime = `${hours}:${minutes}:${seconds}`
 
-    let day = formatDate(dateAndTime.getDay());
+    let day = formatDate(dateAndTime.getDate());
     let month = formatDate(dateAndTime.getMonth() + 1);
     let year = dateAndTime.getFullYear();
 
@@ -113,13 +114,9 @@ function homeScreen() {
     });    
 }
 
-function setBalance(balance) {
-    balance == -1 ? localStorage.setItem("balance", "12250") : localStorage.setItem("balance", `${balance}`);
-}
-
 function balance() {
     locationDisplay.textContent = "Balance";
-    balanceDisplay.textContent = `£${localStorage.getItem("balance")}`
+    balanceDisplay.textContent = `£${localStorage.getItem("balance")}.31`
 
     buttonNo.addEventListener("click", goBack);
 
@@ -131,42 +128,36 @@ function balance() {
 
 function withdraw() {
     locationDisplay.textContent = "Withdraw";
-
-    let withdrawFive = document.querySelector("#withdrawFive");
-    let withdrawTen = document.querySelector("#withdrawTen");
-    let withdrawTwenty = document.querySelector("#withdrawTwenty");
-    let withdrawForty = document.querySelector("#withdrawForty");
-    let withdrawFifty = document.querySelector("#withdrawFifty");
-    let withdrawCustom = document.querySelector("#withdrawCustom");
-
     let curBalance = parseInt(localStorage.getItem("balance"));
-    let newBalance = 0;
 
-    withdrawFive.addEventListener("click", () => {
-        localStorage.setItem("balance",`${curBalance - 5}`);
-    });
-
-    withdrawTen.addEventListener("click", () => {
+    document.querySelector("#withdrawTen").addEventListener("click", () => {
         localStorage.setItem("balance",`${curBalance - 10}`);
+        postWithdraw(10);
     });
 
-    withdrawTwenty.addEventListener("click", () => {
+    document.querySelector("#withdrawTwenty").addEventListener("click", () => {
         localStorage.setItem("balance",`${curBalance - 20}`);
+        postWithdraw(20); 
     });
 
-    withdrawForty.addEventListener("click", () => {
-        localStorage.setItem("balance",`${curBalance - 40}`);
-    });
-
-    withdrawFifty.addEventListener("click", () => {
+    document.querySelector("#withdrawFifty").addEventListener("click", () => {
         localStorage.setItem("balance",`${curBalance - 50}`);
+        postWithdraw(50);
     });
 
-    withdrawCustom.addEventListener("click", () => {
+    document.querySelector("#withdrawHundred").addEventListener("click", () => {
+        localStorage.setItem("balance",`${curBalance - 100}`);
+        postWithdraw(100);
+    });
+
+    document.querySelector("#withdrawCustom").addEventListener("click", () => {
         
     });
 
-
+    function postWithdraw(amount) {
+        alert(`You successfully withdrew £${amount}. Have a nice day!`)
+        reset();
+    }
 
     
 
@@ -222,10 +213,11 @@ function toggleLockOutScreen() {
 function togglePinEntry() {
     let objects = document.getElementsByClassName("pinEntry");
 
-    pinEntry();
+    
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
+    pinEntry();
 }
 function toggleHomeScreen() {
     locationDisplay.textContent = "Home";

@@ -104,6 +104,8 @@ p {
 #screenContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
 
     height: 75%;
@@ -222,9 +224,14 @@ p {
 }
 
 #topBox {
+    width:90%;
+
     display: flex;
     justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
 
+    gap: 60px;
 
     height: 50px;
 }
@@ -232,7 +239,9 @@ p {
 #topBox > p {
     font-size: 1.5rem;
 }
-
+#location {
+    padding-left: 35px;
+}
 
 /*pin entry screen*/
 #pinEntryScreen {
