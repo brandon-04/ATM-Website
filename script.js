@@ -1,4 +1,3 @@
-
 let attempts = 0;
 
 let locationDisplay = document.querySelector("#location");
@@ -7,6 +6,15 @@ let balanceDisplay = document.querySelector("#balanceDisplayText");
 
 let buttonNo = document.querySelector("#buttonNo");
 let buttonYes = document.querySelector("#buttonYes");
+
+
+function initSetup() {
+    if (localStorage.getItem("pin") == null) {
+        localStorage.setItem("pin", "1234")
+        localStorage.setItem("balance", "1000")
+    }
+}
+initSetup();
 
 
 setTime();
