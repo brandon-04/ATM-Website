@@ -4,25 +4,68 @@ let pinDisplay = document.querySelector("#pinEntryTextDisplay");
 let balanceDisplay = document.querySelector("#balanceDisplayText");
 let customAmountDisplay = document.querySelector("#customAmountDisplay");
 
+let typedPin = "";
+
 let buttonNo = document.querySelector("#buttonNo");
 let buttonYes = document.querySelector("#buttonYes");
 
+let pinEntryActive = false;
+let homeScreenActive = false;
+let balanceScreenActive = false;
+let withdrawScreenActive = false;
+let customWithdrawScreenActive = false;
+let pinChangeScreenActive = false;
+
+buttonNo.addEventListener("click", () => {
+    if(pinEntryActive == true){
+        reset();
+    }
+    else if(homeScreenActive == true){
+        reset();
+    }
+    else if(balanceScreenActive == true){
+        toggleBalanceScreen("off");
+        toggleHomeScreen("on");
+    }
+    else if(withdrawScreenActive == true){
+        toggleWithdrawScreen("off");
+        toggleHomeScreen("on");
+    }
+    else if(customWithdrawScreenActive == true){
+        toggleCustomWithdrawScreen("off");
+        toggleWithdrawScreen("on");
+    }
+    else if(pinChangeScreenActive == true){
+        togglePinChangeScreen("off");
+        toggleHomeScreen("on");
+    }
+});
+
+buttonYes.addEventListener("click", ()=> {
+    if(pinEntryActive == true){
+        checkPin(typedPin);
+    }
+    else if(customWithdrawScreenActive == true){
+
+    }
+});
+
 initSetup();
-
-setTime();
-setInterval(setTime, 1000);
-
-pinEntry();
 
 function initSetup() {
     if (localStorage.getItem("pin") == null) {
         localStorage.setItem("pin", "1234")
         localStorage.setItem("balance", "1000")
     }
+    setTime();
+    setInterval(setTime, 1000);
+    pinEntry();
 }
+
 function reset() {
     location.reload();
 }
+
 function setTime() {
     let timeDisplay = document.querySelector("#time");
     let dateDisplay = document.querySelector("#date");
@@ -44,16 +87,15 @@ function setTime() {
     timeDisplay.innerHTML = fullTime;
     dateDisplay.innerHTML = fullDate;
 }
+
 function formatDate(number) {
     return number < 10 ? `0${number}` : number;
 }
 
-
 function pinEntry() {
+    pinEntryActive = true;
     
     locationDisplay.textContent = "Pin Entry";
-    let typedPin = "";
-    clearPinEntry();
     
     for (let i = 0; i < 10; i++) {
         let button = document.querySelector(`#button${i}`);
@@ -65,84 +107,63 @@ function pinEntry() {
             }
         });
     }
-
-    buttonNo.addEventListener("click", clearPinEntry);
-    buttonYes.addEventListener("click", checkPin);
-
-   
-
-
-    //pin entry exclusive functions
-    function clearPinEntry() {
-        typedPin = "";
-        pinDisplay.textContent = typedPin;
-    }
-
-    function checkPin() {
-        if (typedPin == localStorage.getItem("pin")) {
-
-            removeListeners();
-
-            togglePinEntry();
-            toggleHomeScreen();
-        }
-        else {
-            attempts += 1;
-            alert(`Incorrect PIN. ${3 - attempts} left.`);
-
-            if (attempts == 3) {
-                togglePinEntry();
-                toggleLockOutScreen();
-            }
-        }
-    }
-    function removeListeners() {
-        buttonYes.removeEventListener("click", checkPin);
-        buttonNo.removeEventListener("click", clearPinEntry);
-    }
-
 }
+
+function checkPin(pin) {
+    if (pin == localStorage.getItem("pin")) {
+        pinEntryActive = false;
+
+        togglePinEntry("off");
+        toggleHomeScreen("on");
+    }
+    else {
+        attempts += 1;
+        alert(`Incorrect PIN. ${3 - attempts} left.`);
+
+        if (attempts == 3) {
+            pinEntryActive == false;
+            togglePinEntry("off");
+            toggleLockOutScreen();
+        }
+    }
+}
+
 function homeScreen() {
+    homeScreenActive = true;
+    
+    balanceScreenActive = false;
+    pinChangeScreenActive = false;
+    withdrawScreenActive = false;
+
     let balanceButton = document.querySelector("#balanceButton");
     let withdrawButton = document.querySelector("#withdrawButton"); 
     let pinChangeButton = document.querySelector("#pinChangeButton"); 
 
-    buttonNo.addEventListener("click", reset);
-    buttonYes.addEventListener("click", reset);
-
     balanceButton.addEventListener("click", () => {
-        toggleHomeScreen();
-        toggleBalanceScreen();
-
-        buttonNo.removeEventListener("click", reset);
+        homeScreenActive = false;
+        toggleHomeScreen("off");
+        toggleBalanceScreen("on");
     });
     withdrawButton.addEventListener("click", () => {
-        toggleHomeScreen();
-        toggleWithdrawScreen()
-
-        buttonNo.removeEventListener("click", reset);
+        homeScreenActive = false;
+        toggleHomeScreen("off");
+        toggleWithdrawScreen("on")
     });
     pinChangeButton.addEventListener("click", () => {
-        toggleHomeScreen();
-        togglePinChangeScreen();
-
-        buttonNo.removeEventListener("click", reset);
+        homeScreenActive = false;
+        toggleHomeScreen("off");
+        togglePinChangeScreen("on");
     });    
 }
 
 function balance() {
+    balanceScreenActive = true;
     locationDisplay.textContent = "Balance";
     balanceDisplay.textContent = `£${localStorage.getItem("balance")}.31`
-
-    buttonNo.addEventListener("click", goBack);
-
-    function goBack(){
-        toggleBalanceScreen();
-        toggleHomeScreen();
-    }
 }
 
 function withdraw() {
+    withdrawScreenActive = true;
     locationDisplay.textContent = "Withdraw";
     let curBalance = parseInt(localStorage.getItem("balance"));
 
@@ -187,10 +208,9 @@ function withdraw() {
     });
 
     document.querySelector("#withdrawCustom").addEventListener("click", () => {
-        buttonNo.removeEventListener("click", goBack);
-
-        toggleWithdrawScreen();
-        toggleCustomWithdrawScreen();
+        withdrawScreenActive = false;
+        toggleWithdrawScreen("off");
+        toggleCustomWithdrawScreen("on");
     });
 
     function postWithdraw(amount) {
@@ -202,17 +222,10 @@ function withdraw() {
         reset();
     }
 
-    
 
-    buttonNo.addEventListener("click", goBack);
-
-    function goBack() {
-        toggleWithdrawScreen();
-        toggleHomeScreen();
-        buttonNo.removeEventListener("click", goBack);
-    }
 }
 function customWithdraw() {
+    customWithdrawScreenActive = true;
 
     let typedAmount = "";
     
@@ -223,18 +236,6 @@ function customWithdraw() {
             typedAmount += i;
             customAmountDisplay.textContent = typedAmount;
         });
-    }
-
-    buttonYes.addEventListener("click", () => {
-        checkAmount(parseInt(typedAmount));
-    });
-
-    buttonNo.addEventListener("click", goBack);
-
-    function goBack() {
-        toggleCustomWithdrawScreen();
-        toggleWithdrawScreen();
-        buttonNo.removeEventListener("click", goBack);
     }
 
     function checkAmount(amount) {
@@ -253,36 +254,46 @@ function pinChange() {
 
 
 
-function toggleBalanceScreen() {
+function toggleBalanceScreen(prompt) {
     let objects = document.getElementsByClassName("balance");
 
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
 
-    balance();
+    if(prompt == "on"){
+        balance();
+    }
 }
-function toggleWithdrawScreen() {
+function toggleWithdrawScreen(prompt) {
     let objects = document.getElementsByClassName("withdraw");
 
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
-    withdraw();
-}
-function toggleCustomWithdrawScreen() {
-    let objects = document.getElementsByClassName("customWithdraw");
 
+    if(prompt == "on"){
+        withdraw();
+    }
+}
+function toggleCustomWithdrawScreen(prompt) {
+    let objects = document.getElementsByClassName("customWithdraw");
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
-    customWithdraw(); 
+    if(prompt == "on"){
+        customWithdraw(); 
+    }
 }
-function togglePinChangeScreen() {
+function togglePinChangeScreen(prompt) {
     let objects = document.getElementsByClassName("pinChange");
 
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
+    }
+    
+    if(prompt == "on"){
+        pinChange();
     }
 }
 function toggleLockOutScreen() {
@@ -292,35 +303,30 @@ function toggleLockOutScreen() {
         objects[i].classList.toggle("hidden");
     }
 }
-function togglePinEntry() {
+function togglePinEntry(prompt) {
     let objects = document.getElementsByClassName("pinEntry");
-
-    
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
-    pinEntry();
-}
-function toggleHomeScreen() {
-    locationDisplay.textContent = "Home";
 
+    if(prompt == "on"){
+        pinEntry();
+    }
+}
+function toggleHomeScreen(prompt) {
+    locationDisplay.textContent = "Home";
     let objects = document.getElementsByClassName("home");
 
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
 
-    homeScreen();
+    if(prompt == "on"){
+        homeScreen();
+    }
 }
 
-
-
-
-
-
-
-
-//remaining screens and issues
-//1 - lock out screen for when there is too many tries
-//2 - need a home page, withdrawal, balance and change pin
-//3 - hiding screens
+//remaining issues
+//1 - fixing back and yes buttons
+//2 - finish custom withdrawal
+//3 - 
