@@ -4,8 +4,10 @@ let pinDisplay = document.querySelector("#pinEntryTextDisplay");
 let balanceDisplay = document.querySelector("#balanceDisplayText");
 let customAmountDisplay = document.querySelector("#customAmountDisplay");
 
-let typedPin = "";
+
 let typedAmount = "";
+
+let typedPin = "";
 
 let newPin = "";
 let confirmNewPin = "";
@@ -40,9 +42,7 @@ function addEventListeners() {
         toggleHomeScreen();
     });
     buttonNoCustomWithdraw.addEventListener("click", () => {
-        resetTypedAmount();
-        toggleCustomWithdrawScreen();
-        toggleWithdrawScreen();
+        reset();
     });
     buttonNoPinChange.addEventListener("click", () => {
         togglePinChangeScreen();
@@ -226,6 +226,7 @@ function insufficientFunds() {
 
 function notMultipleOfFive() {
     alert("You can only withdraw in multiples of 5, cancelling transaction");
+    reset();
 }
 
 function customWithdraw() {
