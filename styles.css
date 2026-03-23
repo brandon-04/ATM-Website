@@ -387,3 +387,22 @@ p {
 
     box-shadow: none;
 }
+
+/*Custom Withdraw Screen*/
+#customWithdrawScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    gap: 30px;
+
+    height: 100%;
+    width: 100%;
+}
+
+#customWithdrawScreen > h1 {
+    font-size: 4rem;
+    color: var(--main-color);
+}
