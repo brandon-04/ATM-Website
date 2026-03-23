@@ -6,10 +6,43 @@ let customAmountDisplay = document.querySelector("#customAmountDisplay");
 
 let typedPin = "";
 
-let buttonNo = document.querySelector("#buttonNo");
-let buttonYes = document.querySelector("#buttonYes");
+let buttonNoPinEntryHomeScreen = document.querySelector("#buttonNoPinEntryHomeScreen");
+let buttonNoBalance = document.querySelector("#buttonNoBalance");
+let buttonNoWithdraw = document.querySelector("#buttonNoWithdraw");
+let buttonNoCustomWithdraw = document.querySelector("#buttonNoCustomWithdraw");
+let buttonNoPinChange = document.querySelector("#buttonNoPinChange");
+
+
+
+let buttonYesPinEntry = document.querySelector("#buttonYesPinEntry");
+let buttonYesCustomWithdraw = document.querySelector("#buttonYesCustomWithdraw");
+let buttonYesPinChange = document.querySelector("#buttonYesPinChange");
+let buttonYesBlank = document.querySelector("#buttonYesBlank");
 
 initSetup();
+addEventListeners();
+
+function addEventListeners() {
+    buttonNoPinEntryHomeScreen.addEventListener("click", () => {
+        reset();
+    });
+    buttonNoBalance.addEventListener("click", () => {
+        toggleBalanceScreen();
+        toggleHomeScreen();
+    });
+    buttonNoWithdraw.addEventListener("click", () => {
+        toggleWithdrawScreen();
+        toggleHomeScreen();
+    });
+    buttonNoCustomWithdraw.addEventListener("click", () => {
+        //toggleCustomWithdrawScreen();
+        toggleWithdrawScreen();
+    });
+    buttonNoPinChange.addEventListener("click", () => {
+        togglePinChangeScreen();
+        toggleHomeScreen();
+    })
+}
 
 function initSetup() {
     if (localStorage.getItem("pin") == null) {
@@ -64,6 +97,9 @@ function pinEntry() {
             }
         });
     }
+    buttonYesPinEntry.addEventListener("click", () =>{
+        checkPin(typedPin);
+    });
 }
 
 function checkPin(pin) {
@@ -72,6 +108,9 @@ function checkPin(pin) {
 
         togglePinEntry();
         toggleHomeScreen();
+
+        buttonYesPinEntry.classList.toggle("hidden");
+        buttonYesBlank.classList.toggle("hidden");
     }
     else {
         attempts += 1;
@@ -96,17 +135,19 @@ function homeScreen() {
     });
     withdrawButton.addEventListener("click", () => {
         toggleHomeScreen();
-        toggleWithdrawScreen()
+        toggleWithdrawScreen();
     });
     pinChangeButton.addEventListener("click", () => {
         toggleHomeScreen();
         togglePinChangeScreen();
     });    
+
 }
 
 function balance() {
     locationDisplay.textContent = "Balance";
     balanceDisplay.textContent = `£${localStorage.getItem("balance")}.31`
+
 }
 
 function withdraw() {
@@ -153,11 +194,7 @@ function withdraw() {
         }
     });
 
-    document.querySelector("#withdrawCustom").addEventListener("click", () => {
-        withdrawScreenActive = false;
-        toggleWithdrawScreen("off");
-        toggleCustomWithdrawScreen("on");
-    });
+
 
     function postWithdraw(amount) {
         alert(`You successfully withdrew £${amount}. Have a nice day!`)
@@ -168,34 +205,13 @@ function withdraw() {
         reset();
     }
 
-
-}
-
-function customWithdraw() {
-    let typedAmount = "";
     
-    for (let i = 0; i < 10; i++) {
-        let button = document.querySelector(`#button${i}`);
 
-        button.addEventListener("click", () => {
-            typedAmount += i;
-            customAmountDisplay.textContent = typedAmount;
-        });
-    }
-
-    function checkAmount(amount) {
-        let curBalance = parseInt(localStorage.getItem("balance"))
-        if(amount % 5 == 0 && curBalance - amount < 0) {
-            localStorage.setItem("balance", `${curBalance - amount}`)
-            alert(`You successfully withdrew ${amount}. Have a nice day!`);
-        } 
-    }
 }
 
 function pinChange() {
     
 }
-
 
 function toggleBalanceScreen() {
     let objects = document.getElementsByClassName("balance");
@@ -204,7 +220,8 @@ function toggleBalanceScreen() {
         objects[i].classList.toggle("hidden");
     }
 
-
+    toggleNoButtons(buttonNoBalance);
+    balance();
 }
 function toggleWithdrawScreen() {
     let objects = document.getElementsByClassName("withdraw");
@@ -213,14 +230,11 @@ function toggleWithdrawScreen() {
         objects[i].classList.toggle("hidden");
     }
 
-}
-function toggleCustomWithdrawScreen() {
-    let objects = document.getElementsByClassName("customWithdraw");
-    for (let i = 0; i < objects.length; i++) {
-        objects[i].classList.toggle("hidden");
-    }
+    toggleNoButtons(buttonNoWithdraw);
+    withdraw();
 
 }
+
 function togglePinChangeScreen() {
     let objects = document.getElementsByClassName("pinChange");
 
@@ -228,6 +242,7 @@ function togglePinChangeScreen() {
         objects[i].classList.toggle("hidden");
     }
     
+    toggleNoButtons(buttonNoPinChange);
     pinChange();
 }
 function toggleLockOutScreen() {
@@ -254,8 +269,23 @@ function toggleHomeScreen() {
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
-
+    
+    toggleNoButtons(buttonNoPinEntryHomeScreen);
     homeScreen();
+}
+
+function toggleNoButtons(exception) {
+    let noButtons = [buttonNoPinEntryHomeScreen, buttonNoWithdraw, 
+        buttonNoCustomWithdraw, buttonNoPinChange, buttonNoBalance]
+
+    noButtons.forEach(element => {
+        if(element != exception && element.classList != "hidden") {
+            element.classList.add("hidden");
+        }
+        else if(element == exception) {
+            element.classList.remove("hidden");
+        }
+    });
 }
 
 //remaining issues
