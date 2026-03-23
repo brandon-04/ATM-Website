@@ -7,6 +7,12 @@ let customAmountDisplay = document.querySelector("#customAmountDisplay");
 let typedPin = "";
 let typedAmount = "";
 
+let newPin = "";
+let confirmNewPin = "";
+
+let newPinEntryDisplay = document.querySelector("#newPinEntryDisplay");
+let confirmNewPinEntryDisplay = document.querySelector("#confirmNewPinEntryDisplay");
+
 let buttonNoPinEntryHomeScreen = document.querySelector("#buttonNoPinEntryHomeScreen");
 let buttonNoBalance = document.querySelector("#buttonNoBalance");
 let buttonNoWithdraw = document.querySelector("#buttonNoWithdraw");
@@ -34,6 +40,7 @@ function addEventListeners() {
         toggleHomeScreen();
     });
     buttonNoCustomWithdraw.addEventListener("click", () => {
+        resetTypedAmount();
         toggleCustomWithdrawScreen();
         toggleWithdrawScreen();
     });
@@ -122,8 +129,8 @@ function checkPin(pin) {
     }
     else {
         attempts += 1;
-        alert(`Incorrect PIN. ${3 - attempts} left.`);
-
+        alert(`Incorrect PIN. ${3 - attempts} attempts left.`);
+        typedPin == ""
         if (attempts == 3) {
             togglePinEntry();
             toggleLockOutScreen();
@@ -216,9 +223,11 @@ function insufficientFunds() {
     alert("You have insufficient funds, cancelling transaction");
     reset();
 }
+
 function notMultipleOfFive() {
     alert("You can only withdraw in multiples of 5, cancelling transaction");
 }
+
 function customWithdraw() {
     locationDisplay.textContent = "Custom Withdrawal  ";
     
@@ -226,8 +235,11 @@ function customWithdraw() {
         let button = document.querySelector(`#button${i}`);
 
         button.addEventListener("click", () => {
-            typedAmount += i;
-            customAmountDisplay.textContent = `£${typedAmount}`;
+            if (typedAmount.length < 3) {
+                typedAmount += i;
+                customAmountDisplay.textContent = `£${typedAmount}`;
+            }
+            
         });
     }
 
@@ -243,7 +255,7 @@ function checkCustomAmount(amount) {
     console.log(amount)
 
     if(amount % 5 == 0 && curBalance > amount && amount != 0) {
-        localStorage.setItem("balance", `${curtypedAmountBalance - amount}`)
+        localStorage.setItem("balance", `${curBalance - amount}`)
         postWithdraw(amount);
     }
     else if (amount % 5 != 0 || amount == 0){
@@ -255,8 +267,6 @@ function checkCustomAmount(amount) {
         resetTypedAmount();
     }
 }
-
-
 
 function pinChange() {
     locationDisplay.textContent = "Change Pin"
