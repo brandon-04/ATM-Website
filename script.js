@@ -60,7 +60,7 @@ function addEventListeners() {
     })
 
     buttonYesPinChange.addEventListener("click", () => {
-        //check pin and change
+        checkNewPin(newPin,confirmNewPin)
     })
 
 
@@ -270,6 +270,55 @@ function checkCustomAmount(amount) {
 
 function pinChange() {
     locationDisplay.textContent = "Change Pin"
+
+    for (let i = 0; i < 10; i++) {
+        let button = document.querySelector(`#button${i}`);
+
+        button.addEventListener("click", () => {
+
+            if (newPin.length != 4) {
+                newPin += i;
+                newPinEntryDisplay.textContent += "*";
+            }
+            else if(confirmNewPin.length != 4) {
+                confirmNewPin += i;
+                confirmNewPinEntryDisplay.textContent += "*"
+            }
+       });
+    }
+
+}
+
+function checkNewPin(newPin, confirmNewPin) {
+    let oldPin = localStorage.getItem("pin");
+
+    if(newPin != confirmNewPin) {
+        pinsDoNotMatch();
+    }
+
+    else if(newPin == oldPin){
+        sameAsOldPin();
+    }
+
+    else if(newPin == confirmNewPin) {
+        localStorage.setItem("pin", `${confirmNewPin}`)
+        pinsMatch();
+    }
+}
+
+function sameAsOldPin() {
+    alert("Pin is the same as old pin, aborting process");
+    reset();
+}
+
+function pinsDoNotMatch() {
+    alert("Pins do not match, aborting process");
+    reset();
+}
+
+function pinsMatch() {
+    alert("Pin change successful, Enjoy your day!");
+    reset();
 }
 
 function toggleBalanceScreen() {
@@ -316,6 +365,7 @@ function togglePinChangeScreen() {
     }
     
     toggleNoButtons(buttonNoPinChange);
+    toggleYesButtons(buttonYesPinChange);
     pinChange();
 }
 
@@ -378,7 +428,3 @@ function toggleYesButtons(exception) {
         }
     });
 }
-//remaining issues
-//1 - fixing back and yes buttons
-//2 - finish custom withdrawal
-//3 - 
