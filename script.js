@@ -43,8 +43,9 @@ function addEventListeners() {
         toggleHomeScreen();
     });
     buttonNoCustomWithdraw.addEventListener("click", () => {
-        toggleWithdrawScreen();
         toggleCustomWithdrawScreen();
+        toggleWithdrawScreen();
+        
         resetTypedAmount();
     });
     buttonNoPinChange.addEventListener("click", () => {
