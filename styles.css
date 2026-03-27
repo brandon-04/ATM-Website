@@ -15,7 +15,7 @@
 }
 
 :root {
-    --main-font: SpecialGothic;
+    --main-font: NotoSansMono;
     --display-box-font: NotoSansMono;
 
 
@@ -342,7 +342,7 @@ p {
 
     flex-direction: column;
 
-    gap: 30px;
+    gap: 15px;
 
     height: 100%;
     width: 100%;
@@ -351,6 +351,11 @@ p {
 #balanceScreen > h1 {
     font-size: 5rem;
     color: var(--main-color);
+}
+
+#balanceScreen > p {
+    font-size: 3rem;
+    color: var(--main-color)
 }
 
 /*withdraw screen*/
