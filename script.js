@@ -4,6 +4,7 @@ let pinDisplay = document.querySelector("#pinEntryTextDisplay");
 let balanceDisplay = document.querySelector("#balanceDisplayText");
 let customAmountDisplay = document.querySelector("#customAmountDisplay");
 
+let timesVisitedCW = 0;
 
 let typedAmount = "";
 
@@ -42,7 +43,9 @@ function addEventListeners() {
         toggleHomeScreen();
     });
     buttonNoCustomWithdraw.addEventListener("click", () => {
-        reset();
+        toggleWithdrawScreen();
+        toggleCustomWithdrawScreen();
+        resetTypedAmount();
     });
     buttonNoPinChange.addEventListener("click", () => {
         togglePinChangeScreen();
@@ -232,7 +235,8 @@ function notMultipleOfFive() {
 function customWithdraw() {
     locationDisplay.textContent = "Custom Withdrawal  ";
     
-    for (let i = 0; i < 10; i++) {
+    if(timesVisitedCW == 0) {
+        for (let i = 0; i < 10; i++) {
         let button = document.querySelector(`#button${i}`);
 
         button.addEventListener("click", () => {
@@ -240,10 +244,10 @@ function customWithdraw() {
                 typedAmount += i;
                 customAmountDisplay.textContent = `£${typedAmount}`;
             }
-            
         });
+        }    
     }
-
+    timesVisitedCW++;
 }
 
 function resetTypedAmount() {
@@ -301,8 +305,12 @@ function checkNewPin(newPin, confirmNewPin) {
         sameAsOldPin();
     }
 
-    else if(newPin == confirmNewPin) {
-        localStorage.setItem("pin", `${confirmNewPin}`)
+    else if(newPin == "" || confirmNewPin == "") {
+        pinsNull();
+    }
+
+    else {
+        localStorage.setItem("pin", `${confirmNewPin}`);
         pinsMatch();
     }
 }
@@ -319,6 +327,11 @@ function pinsDoNotMatch() {
 
 function pinsMatch() {
     alert("Pin change successful, Enjoy your day!");
+    reset();
+}
+
+function pinsNull() {
+    alert("Please enter two full pins, aborting process.");
     reset();
 }
 

@@ -9,8 +9,14 @@
     src: url("fonts/SpecialGothic/SpecialGothicExpandedOne-Regular.ttf");
 }
 
+@font-face {
+    font-family: NotoSansMono;
+    src: url("fonts/Noto_Sans_Mono/NotoSansMono-VariableFont_wdth\,wght.ttf");
+}
+
 :root {
     --main-font: SpecialGothic;
+    --display-box-font: NotoSansMono;
 
 
     --main-color: #344e41; 
@@ -237,6 +243,7 @@ p {
 }
 
 #topBox > p {
+    font-family: var(--display-box-font);
     font-size: 1.5rem;
 }
 #location {
