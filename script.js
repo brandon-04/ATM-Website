@@ -4,7 +4,9 @@ let pinDisplay = document.querySelector("#pinEntryTextDisplay");
 let balanceDisplay = document.querySelector("#balanceDisplayText");
 let customAmountDisplay = document.querySelector("#customAmountDisplay");
 
+let timesVisitedPE = 0;
 let timesVisitedCW = 0;
+let timesVisitedPC = 0;
 
 let typedAmount = "";
 
@@ -16,7 +18,8 @@ let confirmNewPin = "";
 let newPinEntryDisplay = document.querySelector("#newPinEntryDisplay");
 let confirmNewPinEntryDisplay = document.querySelector("#confirmNewPinEntryDisplay");
 
-let buttonNoPinEntryHomeScreen = document.querySelector("#buttonNoPinEntryHomeScreen");
+let buttonNoPinEntry = document.querySelector("#buttonNoPinEntry");
+let buttonNoHomeScreen = document.querySelector("#buttonNoHomeScreen");
 let buttonNoBalance = document.querySelector("#buttonNoBalance");
 let buttonNoWithdraw = document.querySelector("#buttonNoWithdraw");
 let buttonNoCustomWithdraw = document.querySelector("#buttonNoCustomWithdraw");
@@ -31,7 +34,10 @@ initSetup();
 addEventListeners();
 
 function addEventListeners() {
-    buttonNoPinEntryHomeScreen.addEventListener("click", () => {
+    buttonNoPinEntry.addEventListener("click", () => {
+        clearPinEntry();
+    });
+    buttonNoHomeScreen.addEventListener("click", () => {
         reset();
     });
     buttonNoBalance.addEventListener("click", () => {
@@ -112,18 +118,26 @@ function formatDate(number) {
 
 function pinEntry() {
     locationDisplay.textContent = "Pin Entry";
-    
-    for (let i = 0; i < 10; i++) {
-        let button = document.querySelector(`#button${i}`);
 
-        button.addEventListener("click", () => {
-            if (typedPin.length != 4) {
-                typedPin += i;
-                pinDisplay.textContent += "*";
-            }
-        });
+    if(timesVisitedPE == 0) {
+        for (let i = 0; i < 10; i++) {
+            
+            let button = document.querySelector(`#button${i}`);
+
+            button.addEventListener("click", () => {
+                if (typedPin.length != 4) {
+                    typedPin += i;
+                    pinDisplay.textContent += "*";
+                } 
+            });
+        }
     }
+    timesVisitedPE++;
+}
 
+function clearPinEntry() {
+    typedPin = "";
+    pinDisplay.textContent = "";
 }
 
 function checkPin(pin) {
@@ -134,7 +148,7 @@ function checkPin(pin) {
     else {
         attempts += 1;
         alert(`Incorrect PIN. ${3 - attempts} attempts left.`);
-        typedPin == ""
+        clearPinEntry();
         if (attempts == 3) {
             togglePinEntry();
             toggleLockOutScreen();
@@ -159,6 +173,7 @@ function homeScreen() {
         toggleHomeScreen();
         togglePinChangeScreen();
     });    
+
 
 }
 
@@ -258,9 +273,8 @@ function resetTypedAmount() {
 
 function checkCustomAmount(amount) {
     let curBalance = parseInt(localStorage.getItem("balance"));
-    console.log(amount)
 
-    if(amount % 5 == 0 && curBalance > amount && amount != 0) {
+    if(amount % 5 == 0 && curBalance >= amount && amount != 0) {
         localStorage.setItem("balance", `${curBalance - amount}`)
         postWithdraw(amount);
     }
@@ -277,22 +291,23 @@ function checkCustomAmount(amount) {
 function pinChange() {
     locationDisplay.textContent = "Change Pin"
 
-    for (let i = 0; i < 10; i++) {
-        let button = document.querySelector(`#button${i}`);
+    if(timesVisitedPC == 0) {
+        for (let i = 0; i < 10; i++) {
+            let button = document.querySelector(`#button${i}`);
 
-        button.addEventListener("click", () => {
-
-            if (newPin.length != 4) {
-                newPin += i;
-                newPinEntryDisplay.textContent += "*";
-            }
-            else if(confirmNewPin.length != 4) {
-                confirmNewPin += i;
-                confirmNewPinEntryDisplay.textContent += "*"
-            }
-       });
+            button.addEventListener("click", () => {
+                if (newPin.length != 4) {
+                    newPin += i;
+                    newPinEntryDisplay.textContent += "*";
+                }
+                else if(confirmNewPin.length != 4) {
+                    confirmNewPin += i;
+                    confirmNewPinEntryDisplay.textContent += "*"
+                }
+            });
+        }
     }
-
+    timesVisitedPC++;
 }
 
 function checkNewPin(newPin, confirmNewPin) {
@@ -375,6 +390,8 @@ function toggleCustomWithdrawScreen() {
 function togglePinChangeScreen() {
     let objects = document.getElementsByClassName("pinChange");
 
+
+
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
@@ -391,6 +408,7 @@ function toggleLockOutScreen() {
         objects[i].classList.toggle("hidden");
     }
 
+    toggleYesButtons(buttonYesBlank);
     
 }
 
@@ -399,6 +417,7 @@ function togglePinEntry() {
     for (let i = 0; i < objects.length; i++) {
         objects[i].classList.toggle("hidden");
     }
+    
     pinEntry(); 
 
 }
@@ -411,13 +430,13 @@ function toggleHomeScreen() {
         objects[i].classList.toggle("hidden");
     }
     
-    toggleNoButtons(buttonNoPinEntryHomeScreen);
+    toggleNoButtons(buttonNoHomeScreen);
     toggleYesButtons(buttonYesBlank);
     homeScreen();
 }
 
 function toggleNoButtons(exception) {
-    let noButtons = [buttonNoPinEntryHomeScreen, buttonNoWithdraw, 
+    let noButtons = [buttonNoPinEntry, buttonNoHomeScreen, buttonNoWithdraw, 
         buttonNoCustomWithdraw, buttonNoPinChange, buttonNoBalance]
 
     noButtons.forEach(element => {
